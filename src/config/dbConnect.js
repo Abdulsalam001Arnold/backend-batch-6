@@ -3,15 +3,23 @@
 import admin from "firebase-admin" 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
-const serviceAccount = require("../../serviceAccountkey.json");
+
 
 let isConnected = false
+
+let serviceAccount;
 
 
 export const connectToDb = async () => {
     if(isConnected) {
         console.log("Database is already connected")
         return;
+    }
+
+    if(process.env.NODE_ENV === "production") {
+        serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+    } else {
+        serviceAccount = require("../../serviceAccountkey.json");
     }
 
     try {
