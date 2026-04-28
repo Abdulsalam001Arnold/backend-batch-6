@@ -42,7 +42,7 @@ export const postUser = async (req, res) => {
         }))
 
         const token = await genToken({
-            id: newUser.docs[0].id
+            id: newUser.id
         })
 
         res.cookie("token", token, {
@@ -56,7 +56,7 @@ export const postUser = async (req, res) => {
         return res.status(201).json({
             error: false,
             message: "User created successfully",
-            data: newUser
+            data: { id: newUser.id, username, email }
         })
         
     } catch (err) {
